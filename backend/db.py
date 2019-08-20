@@ -6,13 +6,12 @@ EVENTS = firestore.Client().collection('events')
 
 
 def add_events():
-    data = []
     id = '10001'
     print('adding a new event' + id + ' to firestore')
-    # data['eventDate'] = datetime.datetime.now()
-    # data['eventName'] = 'Test Event'
-    # data['eventDesc'] = 'test description'
-    data[0] = 'hi'
-    print (data)
-    EVENTS.document(id).set(data)
+    doc_ref = EVENTS.document(u'10001')
+    doc_ref.set({
+        u'eventDesc': u'Ada',
+        u'eventDate': u'Lovelace'
+    })
+    print ("success")
     return id

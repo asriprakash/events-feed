@@ -5,10 +5,14 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def create_hero():
-    # req = Flask.request.json
+def default_events():
+    return "hello world"
+
+
+@app.route('/events/add/<id>', methods=['POST'])
+def add_events():
     event = db.add_events()
-    return Flask.jsonify({'id': event}), 201
+    return event
 
 
 if __name__ == '__main__':
