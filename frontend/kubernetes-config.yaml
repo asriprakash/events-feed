@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: events-feed-deloitte
+  labels:
+    app: events-feed-deloitte
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: events-feed-deloitte
+  template:
+    metadata:
+      labels:
+        app: events-feed-deloitte
+    spec:
+      containers:
+      - name: events-feed-deloitte
+        image: monambigha/events-feed-frontend:v1.0
+        env:
+        - name: APP_SETTINGS
+          value: "config.KubernetesConfig"
+        - name: PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: "frontend-server"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "0.1"
+          limits:
+            memory: "512Mi"
+            cpu: "0.5"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 60
+---
+
+apiVersion: v1
+kind: Service
+metadata: 
+  name: events-feed-deloitte-svc
+spec: 
+  ports: 
+     -  port: 80
+        protocol: TCP
+        targetPort: 8080
+  selector: 
+    app: events-feed-deloitte
+  type: LoadBalancer
+---
+
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: events-feed-deloitte-ui-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v2beta1
+    kind: Deployment
+    name: events-feed-deloitte-ui
+  minReplicas: 3
+  maxReplicas: 6
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 60
