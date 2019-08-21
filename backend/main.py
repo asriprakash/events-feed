@@ -10,8 +10,8 @@ def default_events():
 
 
 @app.route('/events/add/<id>', methods=['POST'])
-def add_events():
-    event = db.add_events()
+def add_events(id):
+    event = db.add_events(id)
     return event
 
 
