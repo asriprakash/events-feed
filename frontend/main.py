@@ -25,7 +25,7 @@ except:
     #  - if no env variable is set, these defaults are set 
     #  Port is 5000 because only reason for running from command line locally
     # is because backend is being debugged in vscode, in which case it is on port 5000
-    URL = 'http://35.202.136.214:5000'
+    URL = 'http://localhost:80'
     PROJECT_NAME = 'events-feed-deloitte'
 
 # @app.route("/")
@@ -53,7 +53,7 @@ def addEvent():
 
 @app.route("/events/add", methods=['POST'])
 def add_event():
-    url = 'http://35.202.136.214:80' + '/events/add/' + str(uuid.uuid4())
+    url = 'http://localhost:80' + '/events/add/' + str(uuid.uuid4())
     data = request.form.to_dict(flat=True)
     print(requests.post(url, data=data))
     return redirect('/')
