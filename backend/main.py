@@ -1,8 +1,8 @@
-from flask import Flask
+import flask
 import db
 import json
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 
 @app.route('/')
@@ -12,13 +12,13 @@ def default_events():
 
 @app.route('/events/add/<id>', methods=['POST'])
 def add_events(id):
-    data = Flask.request.form.to_dict(flat=True)
+    data = flask.request.form.to_dict(flat=True)
     event = db.add_events(data, id)
-    return Flask.jsonify({'id': event}), 201
+    return flask.jsonify({'id': event}), 201
     return event
 
 
-@app.route('/events', methods=['GET'])
+@app.route('/events', methods=['POST'])
 def get_events():
     print('backend service responding to request for events')
     # string is default to prevent error when jsonifying python datetime
@@ -26,4 +26,4 @@ def get_events():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8085)
