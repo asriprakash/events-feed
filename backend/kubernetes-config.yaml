@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: events-feed-deloitte-api
-        image: monambigha/events-feed-backend:v1.0
+        image: monambigha/events-feed-backend:v1.3
         env:
         - name: PORT
           value: "8080"

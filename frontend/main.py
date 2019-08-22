@@ -5,8 +5,8 @@ import requests
 import os
 import uuid
 # import auth
-# import json
-# from collections import namedtuple
+import json
+from collections import namedtuple
 try:
     import googleclouddebugger
     googleclouddebugger.enable()
@@ -21,7 +21,7 @@ try:
     BUCKET = app.config['BUCKET']
     PROJECT_NAME = app.config['PROJECT']
 except:
-    URL = 'http://35.236.255.242:8080'
+    URL = 'http://35.222.220.158:8080'
     PROJECT_NAME = 'events-feed-deloitte'
 
 # @app.route("/")
@@ -39,7 +39,7 @@ except:
 
 @app.route("/")
 def showEvents():
-    return render_template("login.html")
+    return render_template("createEvent.html")
 
 
 @app.route("/addEvent")
@@ -50,10 +50,24 @@ def addEvent():
 @app.route("/events/add", methods=['POST'])
 def add_event():
     print('URL--' + URL)
-    url = 'http://35.236.255.242:8080' + '/events/add/' + str(uuid.uuid4())
+    url = 'http://35.222.220.158' + '/events/add/' + str(uuid.uuid4())
     data = request.form.to_dict(flat=True)
     print(requests.post(url, data=data))
-    return redirect('/')
+    return "Success"
+
+
+@app.route("/events", methods=['GET'])
+def view_events():
+    print('URL--' + URL)
+    url = 'http://35.222.220.158' + '/events'
+    try:
+        data = requests.get(url).content
+        model = {'events': json.loads(data, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))} 
+    except Exception: 
+    #   backend is down, so provide alternative data
+        model = {}
+        model['greeting'] = os.getenv('GREETING', 'Events Feed All events')
+    return render_template("viewEvents.html", model=model)
 
 
 if __name__ == '__main__':

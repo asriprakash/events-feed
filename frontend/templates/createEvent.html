@@ -1,30 +1,12 @@
 <html>
 <head>
-	<title>Login V16</title>
+	<title>Add Event</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+
 </head>
 <body>
 
@@ -36,9 +18,9 @@
 
 <!-- Text input-->
 <div class="form-group">
-  <label class="col-md-4 control-label" for="textinput">Event Name</label>  
+  <label class="col-md-4 control-label" for="eventName">Event Name</label>  
   <div class="col-md-4">
-  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" required="">
+  <input id="eventName" name="eventName" type="text" placeholder="" class="form-control input-md" required="">
     
   </div>
 </div>
@@ -71,23 +53,61 @@
 
 </fieldset>
 </form>
+<div>
+<!-- <button onclick="testFunction()">View Events</button> -->
+</div>
+<div id="root"</div>
 
+<form method="get" action="/events">
+  <button type="submit">View Events</button>
+</form>
+
+  <script >
+     function myFunction(){
+         var theUrl="http://35.222.220.158/events";
+         const pDate = document.createElement('p');
+        
+         var xmlHttp = new XMLHttpRequest();
+          xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+         xmlHttp.send(null);
+        xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+             pDate.textContent =xmlHttp.responseText ;
+            callback(xmlHttp.responseText);
+        }
+        else {
+            pDate.textContent="no value";
+        }
+    }
+             
+         document.getElementById('root').appendChild(pDate); 
+      }
+
+function testFunction(){
+     const pDate = document.createElement('p');
+      var theUrl="http://35.222.220.158/events";
+    fetch(theUrl)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    pDate.textContent =JSON.stringify(myJSON);
+    document.getElementById('root').appendChild(pDate); 
+    console.log(JSON.stringify(myJson));
+  });
+}
+  </script>
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
 <!--===============================================================================================-->
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/daterangepicker/moment.min.js"></script>
-	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
-	<script src="js/main.js"></script>
+
 
 </body>
 </html>

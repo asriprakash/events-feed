@@ -7,7 +7,7 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def default_events():
-    return "hello world"
+    return "hello world v1.3"
 
 
 @app.route('/events/add/<id>', methods=['POST'])
@@ -18,7 +18,13 @@ def add_events(id):
     return event
 
 
-@app.route('/events', methods=['POST'])
+@app.route('/events/test/<id>', methods=['GET'])
+def add_events_test(id):
+    event = db.add_events_test(id)
+    return event
+
+
+@app.route('/events', methods=['GET'])
 def get_events():
     print('backend service responding to request for events')
     # string is default to prevent error when jsonifying python datetime
